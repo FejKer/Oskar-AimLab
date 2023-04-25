@@ -3,8 +3,8 @@ using UnityEngine;
 public class ButtonControl : MonoBehaviour
 {
     [SerializeField] GameObject startButton;
-    [SerializeField] GameObject exitButton;
-    [SerializeField] GameObject restartButton;
+    [SerializeField] public GameObject exitButton;
+    [SerializeField] public GameObject restartButton;
     [SerializeField] GameObject crosshair;
 
     public static ButtonControl Instance;
@@ -22,7 +22,6 @@ public class ButtonControl : MonoBehaviour
 
     void Start()
     {
-        restartButton.SetActive(false);
         crosshair.SetActive(false);
     }
 
@@ -35,12 +34,13 @@ public class ButtonControl : MonoBehaviour
         PlayerController.Instance.mouseSensitivity = 3f;
         exitButton.SetActive(false);
         startButton.SetActive(false);
-        TargetShooter.Instance.setCrosshair(true);
+        restartButton.SetActive(false);
+        TargetShooter.Instance.start();
     }
-
 
     public void endGame()
     {
+        restartButton.SetActive(true);
         started = false;
         PlayerController.Instance.setGameStarted(false);
         Cursor.visible = true;
@@ -53,7 +53,7 @@ public class ButtonControl : MonoBehaviour
     public void restartGame()
     {
         exitButton.SetActive(false);
-        restartButton.SetActive(false);
+        restartButton.SetActive(true);
         PlayerController.Instance.mouseSensitivity = 3f;
         Cursor.lockState = CursorLockMode.Locked;
         TargetShooter.Instance.start();
@@ -67,7 +67,6 @@ public class ButtonControl : MonoBehaviour
         TargetShooter.Instance.countdownTimer = 30f;
         TargetShooter.Instance.scoreText.SetText("");
         TargetShooter.Instance.hitCountText.SetText("Hits: 0");
-        restartButton.SetActive(false);
         crosshair.SetActive(true);
         restartGame();
     }

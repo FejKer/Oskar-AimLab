@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
         gameStarted = val;
         Debug.Log("SETGAME STARTED " + val);
 
-        // Move these lines to the setGameStarted method
         if (gameStarted)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -42,12 +41,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!ButtonControl.started)
         {
-            // Remove these lines from the Update method
-            // Cursor.lockState = CursorLockMode.None;
-            // Cursor.visible = true;
             return;
         }
-        // Only move the camera if the game has started
         if (ButtonControl.started)
         {
             transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);

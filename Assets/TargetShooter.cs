@@ -11,7 +11,6 @@ public class TargetShooter : MonoBehaviour
     [SerializeField] public TMP_Text timerText;
     [SerializeField] public TMP_Text scoreText;
     [SerializeField] GameObject crosshair;
-    [SerializeField] GameObject restartButton;
 
     public static TargetShooter Instance;
 
@@ -20,6 +19,7 @@ public class TargetShooter : MonoBehaviour
     public int hitCount = 0;
     public int shootCount = 0;
     private double accurancy;
+    private bool isPaused = false;
 
     public void Awake()
     {
@@ -60,6 +60,12 @@ public class TargetShooter : MonoBehaviour
             accurancyText.SetText("Accurancy: " + System.Math.Round(accurancy, 1) + "%");
             Debug.Log("acc: " + accurancy);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
+        }
+
     }
 
     public void setCrosshair(bool active)
@@ -76,9 +82,32 @@ public class TargetShooter : MonoBehaviour
         accurancyText.SetText("Accurancy: 0%");
         Time.timeScale = 1f;
         scoreText.SetText("");
-        restartButton.SetActive(false);
         crosshair.SetActive(true);
         Cursor.visible = false;
+    }
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+            crosshair.SetActive(false);
+            ButtonControl.Instance.exitButton.SetActive(true);
+            ButtonControl.Instance.restartButton.SetActive(true);
+            PlayerController.Instance.setGameStarted(false);
+            ButtonControl.started = false;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            crosshair.SetActive(true);
+            ButtonControl.Instance.exitButton.SetActive(false);
+            ButtonControl.Instance.restartButton.SetActive(false);
+            PlayerController.Instance.setGameStarted(true);
+            ButtonControl.started = true;
+        }
     }
 
     IEnumerator Countdown()
@@ -90,13 +119,12 @@ public class TargetShooter : MonoBehaviour
             timerText.SetText("Time remaining: " + countdownTimer.ToString("0.0"));
         }
         Debug.Log("Game over!");
-        Time.timeScale = 0f; // Pause the game
+        ButtonControl.Instance.endGame();
+        Time.timeScale = 0f;
         scoreText.SetText("Final score: " + hitCount.ToString());
         hitCountText.SetText("");
-        restartButton.SetActive(true);
         crosshair.SetActive(false);
         Cursor.visible = true;
         countdownStarted = false;
-        ButtonControl.Instance.endGame();
     }
 }
