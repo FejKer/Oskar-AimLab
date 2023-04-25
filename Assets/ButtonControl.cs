@@ -47,6 +47,7 @@ public class ButtonControl : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         PlayerController.Instance.mouseSensitivity = 0;
         exitButton.SetActive(true);
+        restartButton.SetActive(true);
     }
 
     public void restartGame()
