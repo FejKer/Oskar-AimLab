@@ -1,10 +1,12 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System;
 
 public class TargetShooter : MonoBehaviour
 {
     [SerializeField] public TMP_Text hitCountText;
+    [SerializeField] public TMP_Text accurancyText;
     [SerializeField] Camera cam;
     [SerializeField] public TMP_Text timerText;
     [SerializeField] public TMP_Text scoreText;
@@ -16,6 +18,8 @@ public class TargetShooter : MonoBehaviour
     public bool countdownStarted = false;
     public float countdownTimer = 30f;
     public int hitCount = 0;
+    public int shootCount = 0;
+    private double accurancy;
 
     public void Awake()
     {
@@ -29,10 +33,11 @@ public class TargetShooter : MonoBehaviour
 
     void Update()
     {
-        if (!PlayerController.Instance.gameStarted) return; // Add this line to prevent shooting before the game starts
+        if (!PlayerController.Instance.gameStarted) return;
 
         if (Input.GetMouseButtonDown(0))
         {
+            shootCount++;
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -49,6 +54,11 @@ public class TargetShooter : MonoBehaviour
                     }
                 }
             }
+            Debug.Log("sC: " + shootCount);
+            Debug.Log("hC: " + hitCount);
+            accurancy = (double)hitCount / shootCount * 100;
+            accurancyText.SetText("Accurancy: " + System.Math.Round(accurancy, 1) + "%");
+            Debug.Log("acc: " + accurancy);
         }
     }
 
@@ -60,8 +70,10 @@ public class TargetShooter : MonoBehaviour
     public void start()
     {
         hitCount = 0;
+        shootCount = 0;
         countdownTimer = 30f;
         hitCountText.SetText("Hits: 0");
+        accurancyText.SetText("Accurancy: 0%");
         Time.timeScale = 1f;
         scoreText.SetText("");
         restartButton.SetActive(false);
