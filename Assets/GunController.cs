@@ -9,6 +9,8 @@ public class GunController : MonoBehaviour
     public float recoilAmount = 0.1f;
     public float recoilRecoveryTime = 0.1f;
     private Vector3 originalPosition;
+    public ParticleSystem muzzleFlash;
+
 
     void Start()
     {
@@ -35,6 +37,7 @@ public class GunController : MonoBehaviour
     void Shoot()
     {
         audioSource.Play();
+        muzzleFlash.Play();
     }
 
     IEnumerator Recoil()
