@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Transform cameraHolder;
-    [SerializeField] public float mouseSensitivity = 3f;
+    private float mouseSensitivity;
+    [SerializeField] public TMP_InputField mouseSensitivityInput;
 
     public bool gameStarted;
     float verticalLookRotation;
@@ -16,9 +19,22 @@ public class PlayerController : MonoBehaviour
         {
             Instance = this;
         }
+        mouseSensitivity = 1f;
+        mouseSensitivityInput.onValueChanged.AddListener(ValidateInput);
     }
 
-
+    private void ValidateInput(string value)
+    {
+        string newValue = "";
+        foreach (char c in value)
+        {
+            if (char.IsDigit(c) || c == ',')
+            {
+                newValue += c;
+            }
+        }
+        mouseSensitivityInput.text = newValue;
+    }
 
     public void setGameStarted(bool val)
     {
@@ -45,6 +61,13 @@ public class PlayerController : MonoBehaviour
         }
         if (ButtonControl.started)
         {
+            if (mouseSensitivityInput.text == null || mouseSensitivityInput.text == "")
+            {
+                mouseSensitivity = 1f;
+            } else
+            {
+                mouseSensitivity = float.Parse(mouseSensitivityInput.text);
+            }
             transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
             verticalLookRotation -= Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
 

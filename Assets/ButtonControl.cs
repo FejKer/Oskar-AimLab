@@ -31,10 +31,10 @@ public class ButtonControl : MonoBehaviour
         PlayerController.Instance.setGameStarted(true);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        PlayerController.Instance.mouseSensitivity = 3f;
         exitButton.SetActive(false);
         startButton.SetActive(false);
         restartButton.SetActive(false);
+        PlayerController.Instance.mouseSensitivityInput.gameObject.SetActive(false);
         TargetShooter.Instance.start();
     }
 
@@ -45,16 +45,15 @@ public class ButtonControl : MonoBehaviour
         PlayerController.Instance.setGameStarted(false);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
-        PlayerController.Instance.mouseSensitivity = 0;
         exitButton.SetActive(true);
         restartButton.SetActive(true);
+        PlayerController.Instance.mouseSensitivityInput.gameObject.SetActive(true);
     }
 
     public void restartGame()
     {
         exitButton.SetActive(false);
         restartButton.SetActive(true);
-        PlayerController.Instance.mouseSensitivity = 3f;
         Cursor.lockState = CursorLockMode.Locked;
         TargetShooter.Instance.start();
         startGame();

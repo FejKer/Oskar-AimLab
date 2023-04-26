@@ -33,6 +33,10 @@ public class TargetShooter : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
+        }
         if (!PlayerController.Instance.gameStarted) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -60,12 +64,6 @@ public class TargetShooter : MonoBehaviour
             accurancyText.SetText("Accurancy: " + System.Math.Round(accurancy, 1) + "%");
             Debug.Log("acc: " + accurancy);
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
-
     }
 
     public void setCrosshair(bool active)
@@ -97,6 +95,7 @@ public class TargetShooter : MonoBehaviour
             ButtonControl.Instance.exitButton.SetActive(true);
             ButtonControl.Instance.restartButton.SetActive(true);
             PlayerController.Instance.setGameStarted(false);
+            PlayerController.Instance.mouseSensitivityInput.gameObject.SetActive(true);
             ButtonControl.started = false;
         }
         else
@@ -106,6 +105,7 @@ public class TargetShooter : MonoBehaviour
             ButtonControl.Instance.exitButton.SetActive(false);
             ButtonControl.Instance.restartButton.SetActive(false);
             PlayerController.Instance.setGameStarted(true);
+            PlayerController.Instance.mouseSensitivityInput.gameObject.SetActive(false);
             ButtonControl.started = true;
         }
     }
